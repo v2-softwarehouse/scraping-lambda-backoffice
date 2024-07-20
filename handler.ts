@@ -9,3 +9,11 @@ export const hello: APIGatewayProxyHandler = async (event, _context) => {
         }),
     };
 }
+
+export const nuvem: Handler = async (mensagem: String, context: Context) => {
+    context.succeed('Mensagem da Nuvem: ' + mensagem);
+}
+
+export const novoArquivoJSON: Handler = async (event: APIGatewayProxyEvent, _context: Context) => {
+  console.info(event);
+}

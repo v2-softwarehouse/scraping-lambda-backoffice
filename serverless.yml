@@ -8,7 +8,7 @@ plugins:
 
 provider:
   name: aws
-  runtime: nodejs21
+  runtime: nodejs10
 
 functions:
   hello:
