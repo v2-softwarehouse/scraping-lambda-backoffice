@@ -13,6 +13,7 @@
     "source-map-support": "^0.5.10"
   },
   "devDependencies": {
+    "serverless": "^1.67.0",
     "@types/aws-lambda": "^8.10.17",
     "@types/node": "^10.12.18",
     "serverless-offline": "^5.0.1",
