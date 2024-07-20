@@ -8,7 +8,7 @@ plugins:
 
 provider:
   name: aws
-  runtime: nodejs13.10
+  runtime: nodejs18
 
 functions:
   hello:
