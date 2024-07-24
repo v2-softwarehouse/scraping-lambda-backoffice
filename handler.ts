@@ -6,7 +6,7 @@ export const hello: APIGatewayProxyHandler = async (event, _context) => {
     let targetUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.API_KEY}`
     
     // request call with parameters
-    request(targetUrl, function (err, response, body) {
+    request(targetUrl, function (err, body) {
         console.log('error:', err); // prints the error if one occurred
         let geoLocation = JSON.parse(body);
         let mssg = `lat: ${geoLocation.results[0].geometry.location.lat} long: ${geoLocation.results[0].geometry.location.lng}`;
