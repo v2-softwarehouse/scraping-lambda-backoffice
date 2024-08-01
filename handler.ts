@@ -1,20 +1,24 @@
 import { APIGatewayProxyHandler, APIGatewayProxyEvent, Context, Handler } from 'aws-lambda';
-const request = require('request'); // Imports the module for use
+import { UseCaseGatewayInjectorCompanion } from './src/feature/latlong/gateway/backoffice_gateway_injector';
+import { GetLatlongUseCase } from './src/feature/latlong/business/get_latlong_usecase';
+import { GoogleAPIImpl } from './src/plugin/feature/latlong/google_api_impl';
+import { PresenterBackOfficeImpl } from './src/plugin/feature/latlong/gateway/presenter_backoffice_impl';
 
-export const hello: APIGatewayProxyHandler = async (event, _context) => {
-    let address = '1301 S University Parks Dr, Waco, TX';
-    let targetUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.API_KEY}`
+//injeta classes concretas
+UseCaseGatewayInjectorCompanion.self = {
+    get getUseCase(): GetLatlongUseCase {
+        return new GetLatlongUseCase(new GoogleAPIImpl());
+    }
+}
+
+export const hello: APIGatewayProxyHandler = async (event, _context) => {    
+    let presenter = new PresenterBackOfficeImpl();
+    
+    //chama funcao que passa por dentro da ode.
+    presenter.fetchLatLong("")
 
     // request call with parameters
-    request(targetUrl, function (err, res) {
-        if (err) {
-            console.log('error:', err); // prints the error if one occurred
-            return
-        }
-        let geoLocation = JSON.parse(res.body);
-        let mssg = `lat: ${geoLocation.results[0].geometry.location.lat} long: ${geoLocation.results[0].geometry.location.lng}`;
-        console.log(mssg);
-    });
+   
 
     return {
         statusCode: 200,
