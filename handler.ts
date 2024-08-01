@@ -1,17 +1,21 @@
 import { APIGatewayProxyHandler, APIGatewayProxyEvent, Context, Handler } from 'aws-lambda';
 const request = require('request'); // Imports the module for use
 
-export const hello: APIGatewayProxyHandler = async (event, _context) => {    
+export const hello: APIGatewayProxyHandler = async (event, _context) => {
     let address = '1301 S University Parks Dr, Waco, TX';
-    let targetUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.API_KEY}`
-    
+    // let targetUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.API_KEY}`
+    let targetUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=AIzaSyDcUxk8BLS7WpGnWCIMiy2cyPtXfE7Cho4`
+
     // request call with parameters
-    request(targetUrl, function (err, body) {
-        console.log('error:', err); // prints the error if one occurred
-        let geoLocation = JSON.parse(body);
+    request(targetUrl, function (err, res) {
+        if (err) {
+            console.log('error:', err); // prints the error if one occurred
+            return
+        }
+        let geoLocation = JSON.parse(res.body);
         let mssg = `lat: ${geoLocation.results[0].geometry.location.lat} long: ${geoLocation.results[0].geometry.location.lng}`;
         console.log(mssg);
-    }); 
+    });
 
     return {
         statusCode: 200,
@@ -27,5 +31,5 @@ export const nuvem: Handler = async (mensagem: String, context: Context) => {
 }
 
 export const novoArquivoJSON: Handler = async (event: APIGatewayProxyEvent, _context: Context) => {
-  console.info(event);
+    console.info(event);
 }
