@@ -33,7 +33,8 @@ export abstract class BaseViewModel extends EventEmitter implements Controller {
 
     public dispatchUseCase<P, R>(param: P | null, useCase: UseCase<P, R>, listener: (output: Output<R>) => void): Worker | null {
         const dispatcher = new UseCaseDispatcher(new CallbackDecorator(useCase, listener));
-        const worker = dispatcher.dispatch(param);
+        const p = JSON.parse(JSON.stringify(param))
+        const worker = dispatcher.dispatch(p);
         this.compositeJobDisposable.add(worker);
         return worker;
     }

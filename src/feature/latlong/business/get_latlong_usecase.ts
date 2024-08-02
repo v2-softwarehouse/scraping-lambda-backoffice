@@ -12,7 +12,6 @@ export class GetLatlongUseCase extends UseCase<string, string> {
 
     public execute(_param?: string): Output<string> {
         var latlong = this.repo.getLatLong(_param)
-
         return new ValueOutput(latlong);
     }
 }

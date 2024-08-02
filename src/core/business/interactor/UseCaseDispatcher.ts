@@ -22,7 +22,8 @@ class DispatcherDecorator<P, R> extends UseCaseDecorator<P, R> {
     }
 
     dispatch(param: P | null): Worker | null {
-        const worker = new Worker(__filename, { workerData: { param, useCase: this.useCaseDispatcher } });
+        const useCase = JSON.parse(JSON.stringify(this.useCaseDispatcher))
+        const worker = new Worker(__filename, { workerData: { param, useCase } });
         worker.on('message', (result: Output<R>) => this.onResult(result));
         worker.on('error', (error: Error) => this.onError(error));
         return worker;

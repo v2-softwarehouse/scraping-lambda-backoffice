@@ -11,14 +11,17 @@ UseCaseGatewayInjectorCompanion.self = {
     }
 }
 
-export const hello: APIGatewayProxyHandler = async (event, _context) => {    
-    let presenter = new PresenterBackOfficeImpl();
-    
+export const hello: APIGatewayProxyHandler = async (event, _context) => {
+    const presenter = new PresenterBackOfficeImpl();
+    const googleAPIImpl = new GoogleAPIImpl()
+
     //chama funcao que passa por dentro da ode.
-    presenter.fetchLatLong("")
+    presenter.fetchLatLong("TESTE")
+    // googleAPIImpl.getLatLong("1301 S University Parks Dr, Waco, TX")
+
 
     // request call with parameters
-   
+
 
     return {
         statusCode: 200,

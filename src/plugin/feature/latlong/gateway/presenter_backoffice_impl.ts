@@ -10,7 +10,7 @@ export class PresenterBackOfficeImpl extends BaseViewModel implements Controller
         super();
         this.getUseCase = this.injectUseCase();
     }
- 
+
     private injectUseCase(): GetLatlongUseCase {
         return UseCaseGatewayInjectorCompanion.self.getUseCase;
     }

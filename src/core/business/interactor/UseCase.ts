@@ -21,11 +21,11 @@ export abstract class UseCase<P, R> {
         this.onResult(new ErrorOutput(error));
     }
 
-    public onResult(_output: Output<R>) {}
+    public onResult(_output: Output<R>) { }
 
     public guard(_param: P | null): boolean {
         return true;
     }
 
-    public onGuardError() {}
+    public onGuardError() { }
 }

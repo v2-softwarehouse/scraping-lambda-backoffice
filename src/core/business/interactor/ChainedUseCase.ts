@@ -7,10 +7,10 @@ export class ChainedUseCase<P, R, T> extends UseCase<P, T> {
         super();
     }
 
-    async execute(param: P | null): Promise<Output<T>> {
-        const intermediate = await this.first.execute(param);
+    execute(param: P | null): Output<T> {
+        const intermediate = this.first.execute(param);
         if (intermediate.isSuccess()) {
-            return await this.second.execute(intermediate.value);
+            return this.second.execute(intermediate.value);
         }
 
         return new ErrorOutput(intermediate.error!);
