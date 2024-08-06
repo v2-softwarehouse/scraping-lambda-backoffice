@@ -2,30 +2,36 @@ import { Output } from './../dto/Output';
 import { ErrorOutput } from './../dto/ErrorOutput';
 
 export abstract class UseCase<P, R> {
-    async process(param: P | null = null) {
+    async process(param?: P) {
         try {
             if (this.guard(param)) {
-                var output = this.execute(param)
-                this.onResult(output);
+                const output = await this.execute(param);
+                await this.onResult(output);
             } else {
-                this.onGuardError();
+                await this.onGuardError();
             }
         } catch (error) {
-            this.onError(error as Error);
+            await this.onError(error);
         }
     }
 
-    public abstract execute(param: P | null): Output<R>;
-
-    public onError(error: Error) {
-        this.onResult(new ErrorOutput(error));
+    async execute(param?: P): Promise<Output<R>> {
+        throw new Error("Method not implemented.");
     }
 
-    public onResult(_output: Output<R>) { }
+    async onError(error: Error) {
+        await this.onResult(new ErrorOutput(error));
+    }
 
-    public guard(_param: P | null): boolean {
+    async onResult(output?: Output<R>) {
+        // Implement in subclass
+    }
+
+    guard(param?: P): boolean {
         return true;
     }
 
-    public onGuardError() { }
+    async onGuardError() {
+        // Implement in subclass
+    }
 }

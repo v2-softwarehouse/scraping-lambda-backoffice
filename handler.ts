@@ -4,19 +4,23 @@ import { GetLatlongUseCase } from './src/feature/latlong/business/get_latlong_us
 import { GoogleAPIImpl } from './src/plugin/feature/latlong/google_api_impl';
 import { PresenterBackOfficeImpl } from './src/plugin/feature/latlong/gateway/presenter_backoffice_impl';
 
+
+const googleAPIImpl = new GoogleAPIImpl()
+
 //injeta classes concretas
 UseCaseGatewayInjectorCompanion.self = {
     get getUseCase(): GetLatlongUseCase {
-        return new GetLatlongUseCase(new GoogleAPIImpl());
+        return new GetLatlongUseCase(googleAPIImpl);
     }
 }
 
 export const hello: APIGatewayProxyHandler = async (event, _context) => {
     const presenter = new PresenterBackOfficeImpl();
-    const googleAPIImpl = new GoogleAPIImpl()
 
     //chama funcao que passa por dentro da ode.
+    console.log("presenter.fetchLatLong.start")
     presenter.fetchLatLong("TESTE")
+    console.log("presenter.fetchLatLong.end")
     // googleAPIImpl.getLatLong("1301 S University Parks Dr, Waco, TX")
 
 

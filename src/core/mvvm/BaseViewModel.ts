@@ -28,14 +28,17 @@ export abstract class BaseViewModel extends EventEmitter implements Controller {
     }
 
     protected postValue(channelName: string, value: any) {
+        console.log("BaseViewModel.postValue.start")
         this.emit(channelName, value);
+        console.log("BaseViewModel.postValue.end")
     }
 
-    public dispatchUseCase<P, R>(param: P | null, useCase: UseCase<P, R>, listener: (output: Output<R>) => void): Worker | null {
+    public async dispatchUseCase<P, R>(param: P | null, useCase: UseCase<P, R>, listener: (output: Output<R>) => void): Promise<Worker> | null {
+        console.log("BaseViewModel.dispatchUseCase.start")
         const dispatcher = new UseCaseDispatcher(new CallbackDecorator(useCase, listener));
-        const p = JSON.parse(JSON.stringify(param))
-        const worker = dispatcher.dispatch(p);
+        const worker = await dispatcher.dispatch(param);
         this.compositeJobDisposable.add(worker);
+        console.log("BaseViewModel.dispatchUseCase.end")
         return worker;
     }
 }

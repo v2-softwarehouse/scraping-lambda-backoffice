@@ -1,9 +1,12 @@
 const request = require('request'); // Imports the module for use
 
 export class GoogleAPIImpl implements GoogleAPI {
-    getLatLong(_param: any): string | null {
+    public getLatLong(_param: any): string | null {
         // TODO: Não to conseguindo pegar valores do .env
         // const API_KEY = process.env["API_KEY"]
+
+        console.log("GoogleAPIImpl.getLatLong.start")
+
         const API_KEY = "AIzaSyDcUxk8BLS7WpGnWCIMiy2cyPtXfE7Cho4"
         const targetUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${_param}&key=${API_KEY}`
         request(targetUrl, function (err, res) {
@@ -18,6 +21,7 @@ export class GoogleAPIImpl implements GoogleAPI {
             }
         });
 
+        console.log("GoogleAPIImpl.getLatLong.end")
         return "mock string para testes"
     }
 }

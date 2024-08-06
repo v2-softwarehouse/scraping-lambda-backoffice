@@ -5,7 +5,7 @@ export class CompositeJobDisposable {
     private purgeInterval: NodeJS.Timeout;
 
     constructor() {
-        this.purgeInterval = setInterval(this.purge.bind(this), 2 * 60 * 1000);
+        // this.purgeInterval = setInterval(this.purge.bind(this), 2 * 60 * 1000);
     }
 
     add(worker: Worker | null) {
@@ -26,7 +26,7 @@ export class CompositeJobDisposable {
         this.list = [];
     }
 
-    private purge() {
-        this.list = this.list.filter(worker => worker.threadId !== -1);
-    }
+    // private purge() {
+    //     this.list = this.list.filter(worker => worker.threadId !== -1);
+    // }
 }

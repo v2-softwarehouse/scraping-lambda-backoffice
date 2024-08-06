@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
     "lib": ["es2017"],
+    "skipLibCheck": true,
     "moduleResolution": "node",
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "sourceMap": true,
     "target": "es2017",
-    "outDir": "lib"
+    "outDir": "dist"
   },
   "exclude": ["node_modules"]
 }

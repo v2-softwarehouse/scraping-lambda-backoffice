@@ -1,8 +1,7 @@
 import { UseCase } from './UseCase';
 import { Output } from './../dto/Output';
 import { UseCaseDecorator } from './UseCaseDecorator';
-import { Worker, parentPort } from 'worker_threads';
-import { ErrorOutput } from '../dto/ErrorOutput';
+import { parentPort, Worker, isMainThread } from 'worker_threads';
 
 export class UseCaseDispatcher<P, R> {
     private decorator: DispatcherDecorator<P, R>;
@@ -11,29 +10,51 @@ export class UseCaseDispatcher<P, R> {
         this.decorator = new DispatcherDecorator(useCase);
     }
 
-    dispatch(param: P | null = null): Worker | null {
-        return this.decorator.dispatch(param);
+    async dispatch(param: P | null = null): Promise<Worker> {
+        return await this.decorator.dispatch(param);
     }
 }
 
-class DispatcherDecorator<P, R> extends UseCaseDecorator<P, R> {
-    constructor(public useCaseDispatcher: UseCase<P, R>) {
-        super(useCaseDispatcher);
+export class DispatcherDecorator<P, R> extends UseCaseDecorator<P, R> {
+    async dispatch(param: P | null = null): Promise<Worker> {
+        
+        const process = JSON.parse(JSON.stringify(this.use_case.process(param)));
+        const worker = new Worker(__filename, { workerData: { useCase: process } });
+        if (isMainThread) {
+            console.log("DispatcherDecorator.isMainThread")
+            worker.on('message', (result) => {
+                console.log("DispatcherDecorator.isMainThread.onResult: "+ result)
+                this.onResult(result)
+            });
+            worker.on('exit', (exitCode) => {
+                console.log("DispatcherDecorator.isMainThread.onExit: "+ exitCode)
+            });
+            worker.on('error', (error) => {
+                console.log("DispatcherDecorator.isMainThread.onError: "+ error)
+                this.onError(error)
+            });
+        } else {
+            console.log("DispatcherDecorator.process")
+            this.process(param);
+        }
+
+        return worker
     }
 
-    dispatch(param: P | null): Worker | null {
-        const useCase = JSON.parse(JSON.stringify(this.useCaseDispatcher))
-        const worker = new Worker(__filename, { workerData: { param, useCase } });
-        worker.on('message', (result: Output<R>) => this.onResult(result));
-        worker.on('error', (error: Error) => this.onError(error));
-        return worker;
+    override async execute(param: P | null): Promise<Output<R>> {
+        console.log("DispatcherDecorator.execute")
+        const result = await super.execute(param);
+        console.log("DispatcherDecorator.postMessage")
+        parentPort?.postMessage(result);
+
+        return result;
     }
 
-    onError(error: Error) {
-        parentPort?.postMessage(new ErrorOutput(error));
+    async onResult(output?: Output<R>): Promise<void> {
+        
     }
 
-    onResult(output: Output<R>) {
-        parentPort?.postMessage(output);
+    async onError(error: Error): Promise<void> {
+        
     }
 }

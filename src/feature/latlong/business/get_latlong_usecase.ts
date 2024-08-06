@@ -10,8 +10,13 @@ export class GetLatlongUseCase extends UseCase<string, string> {
         this.repo = repo;
     }
 
-    public execute(_param?: string): Output<string> {
-        var latlong = this.repo.getLatLong(_param)
-        return new ValueOutput(latlong);
+    public execute(_param: string): Promise<Output<string>> {
+        console.log("GetLatlongUseCase.execute.start")
+        return new Promise<Output<string>>((resolve, reject) => {
+            var latlong = this.repo.getLatLong(_param)
+            setTimeout( () => {
+                resolve(new ValueOutput(latlong));
+            }, 1500);
+        });
     }
 }

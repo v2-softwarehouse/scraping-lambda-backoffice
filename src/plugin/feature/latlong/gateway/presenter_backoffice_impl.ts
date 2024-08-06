@@ -15,10 +15,13 @@ export class PresenterBackOfficeImpl extends BaseViewModel implements Controller
         return UseCaseGatewayInjectorCompanion.self.getUseCase;
     }
 
-    public fetchLatLong(channelName: string): void {
+    fetchLatLong(channelName: string): void {
+        console.log("PresenterBackOfficeImpl.fetchLatLong.start")
         this.dispatchUseCase(PresenterBackOfficeImpl.PARAM_TEST, this.getUseCase, (result) => {
-            this.postValue(channelName, result);
+            // this.postValue(channelName, result);
+            // console.log("PresenterBackOfficeImpl.fetchLatLong.postValue")
         });
+        console.log("PresenterBackOfficeImpl.fetchLatLong.end")
     }
 
     private static readonly PARAM_TEST: string = "1301 S University Parks Dr, Waco, TX";

@@ -8,12 +8,14 @@ export class CallbackDecorator<P, R> extends UseCaseDecorator<P, R> {
         super(useCase);
     }
 
-    onResult(output: Output<R>) {
+    override async onResult(output: Output<R>) {
+        console.log("CallbackDecorator.onResult.start:" + output.value)
         super.onResult(output);
         this.callback(output);
     }
 
-    onError(error: Error) {
+    override async onError(error: Error) {
+        console.log("CallbackDecorator.onError.start")
         super.onError(error);
         this.callback(new ErrorOutput(error));
     }

@@ -2,23 +2,26 @@ import { UseCase } from './UseCase';
 import { Output } from './../dto/Output';
 
 export abstract class UseCaseDecorator<P, R> extends UseCase<P, R> {
-    constructor(private useCase: UseCase<P, R>) {
+    protected use_case: UseCase<P, R>;
+
+    constructor(use_case: UseCase<P, R>) {
         super();
+        this.use_case = use_case;
     }
 
-    public onError(error: Error) {
-        this.useCase.onError(error);
+    async execute(param?: P): Promise<Output<R>> {
+        return await this.use_case.execute(param);
     }
 
-    public execute(param: P | null): Output<R> {
-        return this.useCase.execute(param);
+    async onResult(output?: Output<R>) {
+        return await this.use_case.onResult(output);
     }
 
-    public onResult(output: Output<R>) {
-        this.useCase.onResult(output);
+    async onError(error: Error) {
+        return await this.use_case.onError(error);
     }
 
-    public guard(param: P | null): boolean {
-        return this.useCase.guard(param);
+    guard(param?: P): boolean {
+        return this.use_case.guard(param);
     }
 }
