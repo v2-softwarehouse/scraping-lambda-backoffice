@@ -21,7 +21,6 @@ export class UseCaseUnit<P, R> {
 
     static Callback = class Callback<R> {
         output: Output<R> = new ValueOutput<R>();
-
         async set(value: Output<R>) {
             this.output = value;
         }

@@ -15,13 +15,16 @@ export class PresenterBackOfficeImpl extends BaseViewModel implements Controller
         return UseCaseGatewayInjectorCompanion.self.getUseCase;
     }
 
-    fetchLatLong(channelName: string): void {
-        console.log("PresenterBackOfficeImpl.fetchLatLong.start")
-        this.dispatchUseCase(PresenterBackOfficeImpl.PARAM_TEST, this.getUseCase, (result) => {
-            // this.postValue(channelName, result);
-            // console.log("PresenterBackOfficeImpl.fetchLatLong.postValue")
-        });
-        console.log("PresenterBackOfficeImpl.fetchLatLong.end")
+    async fetchLatLong(channelName: string): Promise<void> {
+        // console.log("PresenterBackOfficeImpl.fetchLatLong.start")
+        // this.dispatchUseCase(PresenterBackOfficeImpl.PARAM_TEST, this.getUseCase, (result) => {
+        //     this.postValue(channelName, result);
+        //     console.log("PresenterBackOfficeImpl.fetchLatLong.postValue")
+        // });
+        // console.log("PresenterBackOfficeImpl.fetchLatLong.end")
+
+    //    const i = await this.processUseCase(PresenterBackOfficeImpl.PARAM_TEST, this.getUseCase);
+    //    console.log("aqui:" + i.value);
     }
 
     private static readonly PARAM_TEST: string = "1301 S University Parks Dr, Waco, TX";

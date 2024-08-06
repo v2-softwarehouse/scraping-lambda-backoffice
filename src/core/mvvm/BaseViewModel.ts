@@ -7,6 +7,7 @@ import { UseCaseDispatcher } from './../business/interactor/UseCaseDispatcher'; 
 import { Output } from './../business/dto/Output'; // Substitua com a implementação real
 import { EventEmitter } from 'events';
 import { Worker } from 'worker_threads';
+import { UseCaseUnit } from '../business/interactor/UseCaseUnit';
 
 export abstract class BaseViewModel extends EventEmitter implements Controller {
     private channels: Map<string, any> = new Map();
@@ -40,5 +41,13 @@ export abstract class BaseViewModel extends EventEmitter implements Controller {
         this.compositeJobDisposable.add(worker);
         console.log("BaseViewModel.dispatchUseCase.end")
         return worker;
+    }
+
+    public async processUseCase<P, R>(param: P | null, useCase: UseCase<P, R>): Promise<Output<R>> {
+        const callback = new UseCaseUnit.Callback<R>();
+        const decorator = new CallbackDecorator(useCase, callback.set)
+        await decorator.process(param)
+        
+        return callback.output
     }
 }
