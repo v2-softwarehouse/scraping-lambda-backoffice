@@ -45,9 +45,9 @@ export abstract class BaseViewModel extends EventEmitter implements Controller {
 
     public async processUseCase<P, R>(param: P | null, useCase: UseCase<P, R>): Promise<Output<R>> {
         const callback = new UseCaseUnit.Callback<R>();
-        const decorator = new CallbackDecorator(useCase, callback.set)
+        const decorator = new CallbackDecorator(useCase, await callback.set.bind(callback))
         await decorator.process(param)
-        
+
         return callback.output
     }
 }

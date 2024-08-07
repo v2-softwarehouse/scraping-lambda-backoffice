@@ -14,7 +14,7 @@ export class GetLatlongUseCase extends UseCase<string, string> {
         console.log("GetLatlongUseCase.execute.start")
         return new Promise<Output<string>>((resolve, reject) => {
             var latlong = this.repo.getLatLong(_param)
-            setTimeout( () => {
+            setTimeout(() => {
                 resolve(new ValueOutput(latlong));
             }, 1500);
         });

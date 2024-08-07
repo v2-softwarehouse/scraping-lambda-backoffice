@@ -23,8 +23,8 @@ export class PresenterBackOfficeImpl extends BaseViewModel implements Controller
         // });
         // console.log("PresenterBackOfficeImpl.fetchLatLong.end")
 
-    //    const i = await this.processUseCase(PresenterBackOfficeImpl.PARAM_TEST, this.getUseCase);
-    //    console.log("aqui:" + i.value);
+        const i = await this.processUseCase(PresenterBackOfficeImpl.PARAM_TEST, this.getUseCase);
+        console.log("aqui:" + i?.value);
     }
 
     private static readonly PARAM_TEST: string = "1301 S University Parks Dr, Waco, TX";
